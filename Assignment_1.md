@@ -290,9 +290,6 @@ After successfully setting up Jenkins, I created a simple Jenkinsfile in my GitH
 🔹 Jenkinsfile Content
 Here’s the content of the Jenkinsfile I added to the root of my GitHub repository:
 
-groovy
-Copy
-Edit
 pipeline {
     agent any
 
@@ -306,40 +303,76 @@ pipeline {
 }
 🔹 GitHub Repository
 The Jenkinsfile is located in this GitHub repo:
-🔗 https://github.com/your-username/your-repo-name
-(Replace with your actual repo link)
+🔗 https://github.com/Raj123-dev/Devops_Journey_2k25
 
 🔹 CI/CD Pipeline Setup in Jenkins
 To connect Jenkins with the GitHub repo:
 
-Opened Jenkins dashboard → Clicked "New Item"
+1.Opened Jenkins dashboard → Clicked "New Item"
 
-Selected Pipeline → Named it hello-world-pipeline
+2.Selected Pipeline → Named it hello-world-pipeline
 
-Chose "Pipeline script from SCM"
+3.Chose "Pipeline script from SCM"
 
-Selected:
+4.Selected:
 
-SCM: Git
+5.SCM: Git
 
-Repository URL: https://github.com/your-username/your-repo-name.git
+6.Repository URL: https://github.com/Raj123-dev/Devops_Journey_2k25.git
 
 (If private repo: added GitHub credentials)
+my repo is public so credentials do not required here
 
-Set the branch to main (or whichever branch contains the Jenkinsfile)
+7.Set the branch to main (or whichever branch contains the Jenkinsfile)
 
-Clicked Save and then "Build Now"
+8.Clicked Save and then "Build Now"
 
 ✅ Pipeline Output
 The build was triggered, and in the Jenkins console log, I saw:
 
-csharp
-Copy
-Edit
+Started by user Raj Kashyap
+Obtained Jenkinsfile from git https://github.com/Raj123-dev/Devops_Journey_2k25.git
 [Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/New_pipeline_helloworld
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/New_pipeline_helloworld/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Raj123-dev/Devops_Journey_2k25.git # timeout=10
+Fetching upstream changes from https://github.com/Raj123-dev/Devops_Journey_2k25.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/Raj123-dev/Devops_Journey_2k25.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 0d37d105fccd8d6b8fd377c93834656e835bd9c6 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 0d37d105fccd8d6b8fd377c93834656e835bd9c6 # timeout=10
+Commit message: "Update Assignment_1.md"
+ > git rev-list --no-walk 6b8b6a2e695a455d22ea1f0f438af4a05fceaca2 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Hello World)
 [Pipeline] echo
 Hello, World from Jenkins!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
 [Pipeline] End of Pipeline
+Finished: SUCCESS
 🎉 Boom! Jenkins successfully cloned the repo, read the Jenkinsfile, and executed it.
+> And I did my first Assignment.
+> 
 
 
