@@ -13,9 +13,9 @@ For this task, I decided to use AWS to simulate a local Jenkins CI-CD setup. Her
 5. For the instance type:
     - Chose **`t2.micro`** (free tier eligible).
 6. Since I didn’t have an existing key pair:
-    - Created a new one named **`jenkins-key`**.
+    - Created a new one named **`ec2_machine-pem`**.
     - Chose **RSA encryption** and **.pem format**.
-    - Downloaded and safely stored the file: **`jenkins-key.pem`**.
+    - Downloaded and safely stored the file: **`ec2_machine-pem.pem`**.
 7. Updated **Network Settings**:
     - ✅ Allowed **HTTP** traffic from the internet.
     - ✅ Allowed **HTTPS** traffic from the internet.
@@ -26,12 +26,12 @@ Finally, I clicked **"Launch Instance"**, and the EC2 instance was up and runnin
 
 ### 🧰 Step 2: Connect to the EC2 Instance & Install Jenkins
 
-Once my **Jenkins EC2 instance** was running, here’s what I did next:
+Once my **first_ec2_machine EC2 instance** was running, here’s what I did next:
 
 ### 🔌 Connecting to the Instance
 
 1. Waited for a few seconds until the instance showed up as **Running**.
-2. Went to the **Instances** section, selected the checkbox for the `jenkins` instance.
+2. Went to the **Instances** section, selected the checkbox for the `first_ec2_machine` instance.
 3. Clicked **“Connect”**.
 4. Chose **EC2 Instance Connect** (browser-based terminal).
     - (I could’ve used the `.pem` key and connected via SSH client, but for simplicity, stuck to AWS browser terminal.)
@@ -283,5 +283,63 @@ Clicked **Start using Jenkins** — and boom!
 The **Jenkins dashboard** opened up in all its glory.
 
 ---
+
+### 🧪 Step 9: Jenkinsfile Created on GitHub & CI/CD Pipeline Setup
+After successfully setting up Jenkins, I created a simple Jenkinsfile in my GitHub repository to test the CI/CD pipeline.
+
+🔹 Jenkinsfile Content
+Here’s the content of the Jenkinsfile I added to the root of my GitHub repository:
+
+groovy
+Copy
+Edit
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello World') {
+            steps {
+                echo 'Hello, World from Jenkins!'
+            }
+        }
+    }
+}
+🔹 GitHub Repository
+The Jenkinsfile is located in this GitHub repo:
+🔗 https://github.com/your-username/your-repo-name
+(Replace with your actual repo link)
+
+🔹 CI/CD Pipeline Setup in Jenkins
+To connect Jenkins with the GitHub repo:
+
+Opened Jenkins dashboard → Clicked "New Item"
+
+Selected Pipeline → Named it hello-world-pipeline
+
+Chose "Pipeline script from SCM"
+
+Selected:
+
+SCM: Git
+
+Repository URL: https://github.com/your-username/your-repo-name.git
+
+(If private repo: added GitHub credentials)
+
+Set the branch to main (or whichever branch contains the Jenkinsfile)
+
+Clicked Save and then "Build Now"
+
+✅ Pipeline Output
+The build was triggered, and in the Jenkins console log, I saw:
+
+csharp
+Copy
+Edit
+[Pipeline] Start of Pipeline
+[Pipeline] echo
+Hello, World from Jenkins!
+[Pipeline] End of Pipeline
+🎉 Boom! Jenkins successfully cloned the repo, read the Jenkinsfile, and executed it.
 
 
