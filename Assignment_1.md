@@ -6,7 +6,7 @@ For this task, I decided to use AWS to simulate a local Jenkins CI-CD setup. Her
 
 1. **Logged into AWS Console**.
 2. Searched for **EC2** service and clicked on **"Launch Instance"**.
-3. Gave the instance a name: **`jenkins`**.
+3. Gave the instance a name: **`first_ec2_machine`**.
 4. Selected the OS image:
     - **Ubuntu Server 24.04 LTS (HVM), SSD Volume Type**
     - ✅ Made sure it's within the **Free Tier** eligibility.
