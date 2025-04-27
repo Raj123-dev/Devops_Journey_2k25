@@ -374,8 +374,6 @@ Checking out Revision 0d37d105fccd8d6b8fd377c93834656e835bd9c6 (refs/remotes/ori
  
  > git checkout -f 0d37d105fccd8d6b8fd377c93834656e835bd9c6 # timeout=10
 
-Commit message: "Update Assignment_1.md"
-
  > git rev-list --no-walk 6b8b6a2e695a455d22ea1f0f438af4a05fceaca2 # timeout=10
 
 [Pipeline] }
