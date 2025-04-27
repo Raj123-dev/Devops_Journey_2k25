@@ -245,7 +245,7 @@ Here’s what I entered:
 - **Full Name**: `Raj Kashyap`
 - **Email**: `rajdeveloper1234@gmail.com`
 
-Yeah, I know the password isn’t great 😅 but it's just local testing.
+Yeah, The credentials set succesfully.
 
 ---
 
