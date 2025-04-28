@@ -291,7 +291,7 @@ After successfully setting up Jenkins, I created a simple Jenkinsfile in my GitH
 Here’s the content of the Jenkinsfile I added to the root of my GitHub repository:
 
 
-pipeline {
+```pipeline {
     agent any
 
     stages {
