@@ -291,7 +291,8 @@ After successfully setting up Jenkins, I created a simple Jenkinsfile in my GitH
 Here’s the content of the Jenkinsfile I added to the root of my GitHub repository:
 
 
-```pipeline {
+```
+pipeline {
     agent any
 
     stages {
@@ -302,7 +303,7 @@ Here’s the content of the Jenkinsfile I added to the root of my GitHub reposit
         }
     }
 }
-
+```
 🔹 GitHub Repository
 The Jenkinsfile is located in this GitHub repo:
 🔗 https://github.com/Raj123-dev/Devops_Journey_2k25
