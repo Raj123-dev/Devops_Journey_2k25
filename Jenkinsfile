@@ -28,8 +28,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying... (placeholder)'
-                // your deployment logic here
+                sh 'echo ".....Deploying  HelloWorld application...."'
             }
         }
     }
