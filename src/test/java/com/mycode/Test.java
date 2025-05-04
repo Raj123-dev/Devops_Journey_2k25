@@ -7,7 +7,7 @@ public class Test {
 
     @Test
     public void testGetMessage() {
-        App app = new App();
+        HeloWorld app = new HelloWorld();
         String message = app.getMessage();
         assertEquals("Hello, World!", message);
     }
