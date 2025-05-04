@@ -9,7 +9,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Raj123-dev/Devops_Journey_2k25.git'
+                git branch: 'main', url: 'https://github.com/Raj123-dev/Devops_Journey_2k25.git'
+
             }
         }
 
