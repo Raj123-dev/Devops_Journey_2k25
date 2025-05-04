@@ -3,7 +3,7 @@ package com.mycode;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AppTest {
+public class Test {
 
     @Test
     public void testGetMessage() {
