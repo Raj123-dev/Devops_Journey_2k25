@@ -1,6 +1,27 @@
-# Use OpenJDK base image
-FROM openjdk:8
 
+ 
+
+
+
+# Use a Debian-based OpenJDK image with APT support
+
+FROM openjdk:17-jdk-slim
+ 
+# Install necessary libraries for GUI apps
+
+RUN apt-get update && apt-get install -y \
+
+    libxext6 \
+
+    libxrender1 \
+
+    libxtst6 \
+
+    libxi6 \
+
+    libgtk2.0-0 \
+&& rm -rf /var/lib/apt/lists/*
+ 
 # Create app directory inside the container
 WORKDIR /app
 
