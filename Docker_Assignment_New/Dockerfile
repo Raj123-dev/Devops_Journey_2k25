@@ -1,8 +1,4 @@
 
- 
-
-
-
 # Use a Debian-based OpenJDK image with APT support
 
 FROM openjdk:8-jdk-slim
