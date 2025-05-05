@@ -5,7 +5,7 @@
 
 # Use a Debian-based OpenJDK image with APT support
 
-FROM openjdk:17-jdk-slim
+FROM openjdk:8-jdk-slim
  
 # Install necessary libraries for GUI apps
 
