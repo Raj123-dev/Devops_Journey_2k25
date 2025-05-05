@@ -28,12 +28,15 @@ Containers allow a developer to package up an application with all parts it need
 
 ---
 
-## 🔹 Docker Hub
-Docker Hub is a **cloud-based registry** to store and share container images.  
-Example:
+## 🔹 **Docker Hub**
+- Docker Hub ek cloud-based registry hai jahan Docker images ko store, share aur download kiya ja sakta hai.
+- Yahan public aur private repositories dono hoti hain.
+- Common images jaise `nginx`, `mysql` yahan easily available hoti hain.
+- Example:
 ```bash
 docker pull nginx
 ```
+
 
 ---
 
@@ -153,15 +156,6 @@ docker rmi <image_id>         # Remove image
 - Volumes save data.
 - Networks help communication.
 
-
-## 2. **Docker Hub**
-- Docker Hub ek cloud-based registry hai jahan Docker images ko store, share aur download kiya ja sakta hai.
-- Yahan public aur private repositories dono hoti hain.
-- Common images jaise `nginx`, `mysql` yahan easily available hoti hain.
-- Example:
-```bash
-docker pull nginx
-```
 
 ---
 
