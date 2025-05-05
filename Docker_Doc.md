@@ -1,5 +1,5 @@
 
-# Complete Docker Basics – Simple English + Hinglish
+# Complete Docker Basics 
 
 ---
 
