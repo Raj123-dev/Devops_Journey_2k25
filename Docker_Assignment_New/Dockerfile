@@ -26,10 +26,10 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy source code into the container
-COPY FDemo.java .
+COPY Demo.java .
 
 # Compile the Java source code
-RUN javac FDemo.java
+RUN javac Demo.java
 
 # Run the application
 CMD ["java", "Demo"]
