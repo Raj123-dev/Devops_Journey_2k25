@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  repository: registration-app
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: NodePort
+  port: 8080
+mysql:
+  rootPassword: rootpass
+  database: registrationdb
