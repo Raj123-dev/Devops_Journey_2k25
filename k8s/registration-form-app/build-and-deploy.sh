@@ -1,33 +1,56 @@
 #!/bin/bash
 
+set -e  # Exit immediately on error
+
+# Variables
+IMAGE_NAME="rajkashyap12/registration-form-app:latest"
+DEPLOYMENT_FILE="kubernetes/deployment.yaml"
+SERVICE_FILE="kubernetes/service.yaml"
+WAR_SOURCE="target/registration-form-app-1.0-SNAPSHOT.war"
+WAR_DEST="target/registration-form-app.war"
+
 # Step 1: Build the WAR file using Maven
-echo "Building the WAR file..."
+echo "🔨 Building the WAR file..."
 mvn clean package
 
 # Rename WAR file if needed
-mv target/registration-form-app-1.0-SNAPSHOT.war target/registration-form-app.war
-
-# Check if the WAR file exists
-if [ ! -f target/registration-form-app.war ]; then
-  echo "Error: WAR file not found. Ensure the Maven build is successful."
+if [ -f "$WAR_SOURCE" ]; then
+  mv "$WAR_SOURCE" "$WAR_DEST"
+  echo "✅ WAR file renamed to $WAR_DEST"
+else
+  echo "❌ Error: WAR file not found at $WAR_SOURCE"
   exit 1
 fi
 
 # Step 2: Build the Docker image
-echo "Building the Docker image..."
-docker build -t registration-app:latest .
+echo "🐳 Building the Docker image..."
+docker build -t "$IMAGE_NAME" .
 
-# Step 3: Check if kubectl is installed
-if ! command -v kubectl &> /dev/null; then
-  echo "Error: kubectl is not installed. Please install kubectl and try again."
+# Step 3: Push the Docker image
+echo "📤 Pushing the Docker image to Docker Hub..."
+if docker push "$IMAGE_NAME"; then
+  echo "✅ Docker image pushed successfully to $IMAGE_NAME"
+else
+  echo "❌ Docker push failed. Please run: docker login"
   exit 1
 fi
 
-# Step 4: Apply Kubernetes configurations
-echo "Deploying the application to Kubernetes..."
+# Step 4: Check if kubectl is installed
+if ! command -v kubectl &> /dev/null; then
+  echo "❌ kubectl is not installed. Please install kubectl and try again."
+  exit 1
+fi
 
-kubectl apply -f kubernetes/deployment.yaml
-kubectl apply -f kubernetes/service.yaml
+# Step 5: Apply Kubernetes configurations
+echo "🚀 Deploying the application to Kubernetes..."
+kubectl apply -f "$DEPLOYMENT_FILE" --validate=false
+kubectl apply -f "$SERVICE_FILE" --validate=false
 
-echo "Application deployed successfully!"
-echo "Access the application at http://<NodeIP>:<NodePort>"
+# Step 6: Output Node IP and Port
+echo "⏳ Waiting for service to become available..."
+sleep 5
+NODE_IP=$(minikube ip)
+NODE_PORT=$(kubectl get svc registration-form-service -o=jsonpath='{.spec.ports[0].nodePort}')
+
+echo "✅ Application deployed successfully!"
+echo "🌐 Access it at: http://$NODE_IP:$NODE_PORT"
