@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: registration-form-app
-        image: rajkashyap12/registration-form-app:latest  # Make sure the image name is correct
+        image: rajkashyap12/registration-form-app:latest  
         ports:
         - containerPort: 8080
         env:
