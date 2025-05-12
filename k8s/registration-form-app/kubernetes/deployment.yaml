@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: registration-form-app
-        image: your-docker-repo/registration-form-app:latest
+         image: rajkashyap12/registration-form-app:latest
         ports:
         - containerPort: 8080
         env:
