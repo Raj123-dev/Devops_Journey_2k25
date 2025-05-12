@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registration-form-app
+  labels:
+    app: registration-form-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: registration-form-app
+  template:
+    metadata:
+      labels:
+        app: registration-form-app
+    spec:
+      containers:
+      - name: registration-form-app
+        image: your-docker-repo/registration-form-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_URL
+          value: jdbc:mysql://your-database-host:3306/your-database-name
+        - name: DB_USERNAME
+          value: your-database-username
+        - name: DB_PASSWORD
+          value: your-database-password
+      imagePullPolicy: Always
