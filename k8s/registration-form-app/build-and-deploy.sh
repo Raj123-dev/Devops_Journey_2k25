@@ -4,6 +4,9 @@
 echo "Building the WAR file..."
 mvn clean package
 
+# Rename WAR file if needed
+mv target/registration-form-app-1.0-SNAPSHOT.war target/registration-form-app.war
+
 # Check if the WAR file exists
 if [ ! -f target/registration-form-app.war ]; then
   echo "Error: WAR file not found. Ensure the Maven build is successful."
@@ -23,10 +26,7 @@ fi
 # Step 4: Apply Kubernetes configurations
 echo "Deploying the application to Kubernetes..."
 
-# Apply the deployment YAML
 kubectl apply -f kubernetes/deployment.yaml
-
-# Apply the service YAML
 kubectl apply -f kubernetes/service.yaml
 
 echo "Application deployed successfully!"
