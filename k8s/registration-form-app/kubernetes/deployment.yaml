@@ -4,7 +4,7 @@ metadata:
   name: registration-form-app
   labels:
     app: registration-form-app
-spec:
+spec: 
   replicas: 3
   selector:
     matchLabels:
