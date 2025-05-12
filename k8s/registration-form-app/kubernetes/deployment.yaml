@@ -4,7 +4,7 @@ metadata:
   name: registration-form-app
   labels:
     app: registration-form-app
-spec: 
+spec:
   replicas: 3
   selector:
     matchLabels:
@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
       - name: registration-form-app
-         image: rajkashyap12/registration-form-app:latest
+        image: rajkashyap12/registration-form-app:latest  # Make sure the image name is correct
         ports:
         - containerPort: 8080
         env:
         - name: DB_URL
-          value: jdbc:mysql://your-database-host:3306/your-database-name
+          value: jdbc:mysql://your-database-host:3306/your-database-name  # Replace with actual DB info
         - name: DB_USERNAME
-          value: your-database-username
+          value: your-database-username  # Replace with actual DB username
         - name: DB_PASSWORD
-          value: your-database-password
+          value: your-database-password  # Replace with actual DB password
       imagePullPolicy: Always
