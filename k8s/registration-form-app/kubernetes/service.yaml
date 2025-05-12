@@ -5,10 +5,11 @@ metadata:
   labels:
     app: registration-form-app
 spec:
-  type: ClusterIP
+  type: NodePort  # Change from ClusterIP to NodePort
   ports:
     - port: 8080
       targetPort: 8080
       protocol: TCP
+      nodePort: 30001  # Optional: You can specify the port or let Kubernetes choose one
   selector:
     app: registration-form-app
