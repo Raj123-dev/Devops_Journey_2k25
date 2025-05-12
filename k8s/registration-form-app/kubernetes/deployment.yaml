@@ -11,7 +11,7 @@ spec:
       app: registration-form-app
   template:
     metadata:
-      labels:
+      labels: 
         app: registration-form-app
     spec:
       containers:
