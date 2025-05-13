@@ -1,0 +1,23 @@
+# Default values for kubernetes-form-webapp Helm chart.
+mysql:
+  rootPassword: rootpassword
+  database: k8sformdb
+  user: k8suser
+  password: k8spassword
+  storage: 1Gi
+  image: mysql:8.0
+  configMap: mysql-initdb-config
+
+tomcat:
+  image: kubernetes-form-webapp:latest
+  imagePullPolicy: IfNotPresent
+  servicePort: 8080
+  nodePort: 30080
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  path: /
+  pathType: Prefix
+  servicePort: 8080

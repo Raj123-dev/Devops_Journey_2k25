@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - name: tomcat
+        image: {{ .Values.tomcat.image }}
+        imagePullPolicy: {{ .Values.tomcat.imagePullPolicy }}
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_DATABASE
+          value: {{ .Values.mysql.database }}
+        - name: MYSQL_USER
+          value: {{ .Values.mysql.user }}
+        - name: MYSQL_PASSWORD
+          value: {{ .Values.mysql.password }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.tomcat.servicePort }}
+      targetPort: 8080
+      nodePort: {{ .Values.tomcat.nodePort }}
+  selector:
+    app: tomcat

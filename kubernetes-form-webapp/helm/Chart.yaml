@@ -1,0 +1,4 @@
+apiVersion: v2
+name: kubernetes-form-webapp
+version: 0.1.0
+description: A Helm chart for deploying the Java Servlet form webapp with MySQL and Tomcat
