@@ -1,31 +1,93 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Simple app with EC2 and Lambda logging 'Hello World'
- 
+Description: Provision EC2, S3, VPC, and Hello World Lambda using CloudFormation
+
 Parameters:
   EC2KeyPair:
     Type: String
-    Description: EC2 Key Pair for SSH
- 
+    Description: EC2 Key Pair for SSH access
+
 Resources:
+
+  # VPC
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      Tags:
+        - Key: Name
+          Value: MyCustomVPC
+
+  # Subnet (required for EC2 to run inside VPC)
+  MySubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+
+  # Internet Gateway
+  MyInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MyVPC
+      InternetGatewayId: !Ref MyInternetGateway
+
+  # Route Table
+  MyRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref MyRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyInternetGateway
+
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MySubnet
+      RouteTableId: !Ref MyRouteTable
+
+  # S3 Bucket
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-task-bucket-${AWS::AccountId}-${AWS::Region}"
+
+  # EC2 Security Group
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow SSH
+      VpcId: !Ref MyVPC
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
- 
+
+  # EC2 Instance
   HelloEC2:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      ImageId: ami-0c02fb55956c7d316  # Amazon Linux 2 AMI in us-east-1
+      ImageId: ami-0c02fb55956c7d316  # Amazon Linux 2 for us-east-1
       KeyName: !Ref EC2KeyPair
+      SubnetId: !Ref MySubnet
       SecurityGroupIds:
         - !Ref InstanceSecurityGroup
- 
+      Tags:
+        - Key: Name
+          Value: MyHelloEC2
+
+  # IAM Role for Lambda
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -38,7 +100,8 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
- 
+
+  # Lambda Function
   HelloLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -52,16 +115,23 @@ Resources:
             console.log("Hello World from Lambda!");
             return {
               statusCode: 200,
-              body: "Hello World",
+              body: "Hello World"
             };
           };
- 
+
 Outputs:
-  InstanceID:
+  EC2InstanceID:
     Description: EC2 Instance ID
     Value: !Ref HelloEC2
- 
-  LambdaName:
-    Description: Lambda function name
+
+  LambdaFunctionName:
+    Description: Lambda Function Name
     Value: !Ref HelloLambda
- 
+
+  S3BucketName:
+    Description: Name of the S3 Bucket
+    Value: !Ref MyBucket
+
+  VPCID:
+    Description: VPC ID
+    Value: !Ref MyVPC
