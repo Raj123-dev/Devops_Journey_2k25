@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1  # Only one instance of MySQL for simplicity (you can scale if needed)
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7  # Use official MySQL image
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: your_root_password  # Replace with your root password
+        - name: MYSQL_DATABASE
+          value: registration_db  # Database name your app will use
+        ports:
+        - containerPort: 3306  # MySQL default port
