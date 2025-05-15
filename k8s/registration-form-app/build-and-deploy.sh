@@ -6,6 +6,8 @@ set -e  # Exit immediately on error
 IMAGE_NAME="rajkashyap12/registration-form-app:latest"
 DEPLOYMENT_FILE="kubernetes/deployment.yaml"
 SERVICE_FILE="kubernetes/service.yaml"
+MYSQL_DEPLOYMENT_FILE="kubernetes/mysql-deployment.yaml"
+MYSQL_SERVICE_FILE="kubernetes/mysql-service.yaml"
 WAR_SOURCE="target/registration-form-app-1.0-SNAPSHOT.war"
 WAR_DEST="target/registration-form-app.war"
 
@@ -41,13 +43,18 @@ if ! command -v kubectl &> /dev/null; then
   exit 1
 fi
 
-# Step 5: Apply Kubernetes configurations
-echo "🚀 Deploying the application to Kubernetes..."
+# Step 5: Apply Kubernetes configurations for MySQL
+echo "🚀 Deploying MySQL to Kubernetes..."
+kubectl apply -f "$MYSQL_DEPLOYMENT_FILE"
+kubectl apply -f "$MYSQL_SERVICE_FILE"
+
+# Step 6: Apply Kubernetes configurations for your application
+echo "🚀 Deploying the registration-form app to Kubernetes..."
 kubectl apply -f "$DEPLOYMENT_FILE" --validate=false
 kubectl apply -f "$SERVICE_FILE" --validate=false
 
-# Step 6: Output Node IP and Port
-echo "⏳ Waiting for service to become available..."
+# Step 7: Output Node IP and Port
+echo "⏳ Waiting for services to become available..."
 sleep 5
 NODE_IP=$(minikube ip)
 NODE_PORT=$(kubectl get svc registration-form-service -o=jsonpath='{.spec.ports[0].nodePort}')
