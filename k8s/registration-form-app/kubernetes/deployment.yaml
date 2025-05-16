@@ -58,9 +58,10 @@ spec:
     - http:
         paths:
           - path: /form(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: registration-form-service
                 port:
                   number: 80
+
