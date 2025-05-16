@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,15 +16,51 @@ spec:
         app: registration-form-app
     spec:
       containers:
-      - name: registration-form-app
-        image: rajkashyap12/registration-form-app:latest
-        imagePullPolicy: Always  
-        ports:
-        - containerPort: 8080
-        env:
-        - name: DB_URL
-          value: jdbc:mysql://your-database-host:3306/your-database-name
-        - name: DB_USERNAME
-          value: your-database-username
-        - name: DB_PASSWORD
-          value: your-database-password
+        - name: registration-form-app
+          image: rajkashyap12/registration-form-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: jdbc:mysql://mysql:3306/registration_db  # update as needed
+            - name: DB_USERNAME
+              value: root  # update with your DB username
+            - name: DB_PASSWORD
+              value: password123  # update with your DB password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registration-form-service
+  labels:
+    app: registration-form-app
+spec:
+  selector:
+    app: registration-form-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registration-form-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /form(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: registration-form-service
+                port:
+                  number: 80
