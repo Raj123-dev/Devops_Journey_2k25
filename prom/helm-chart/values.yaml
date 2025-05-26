@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: flask-app
+  tag: latest
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 5000
+  nodePort: 30007
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: ""
+  name: users-db-pvc
