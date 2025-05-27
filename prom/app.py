@@ -11,7 +11,7 @@ app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
 # Database setup
-DB_NAME = '/app/data/users.db'
+DB_NAME = 'users.db'
 
 def init_db():
     db_dir = os.path.dirname(DB_NAME)
