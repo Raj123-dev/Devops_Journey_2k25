@@ -15,7 +15,7 @@ DB_NAME = 'users.db'
 
 def init_db():
     db_dir = os.path.dirname(DB_NAME)
-    if not os.path.exists(db_dir):
+    if db_dir and not os.path.exists(db_dir):
         os.makedirs(db_dir)
     if not os.path.exists(DB_NAME):
         conn = sqlite3.connect(DB_NAME)
@@ -27,6 +27,7 @@ def init_db():
         )''')
         conn.commit()
         conn.close()
+
 
 def get_db_connection():
     conn = sqlite3.connect(DB_NAME)
