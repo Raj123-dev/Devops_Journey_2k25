@@ -14,6 +14,9 @@ metrics = PrometheusMetrics(app)
 DB_NAME = 'data/users.db'
 
 def init_db():
+    db_dir = os.path.dirname(DB_NAME)
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir)
     if not os.path.exists(DB_NAME):
         conn = sqlite3.connect(DB_NAME)
         c = conn.cursor()
