@@ -11,7 +11,7 @@ app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
 # Database setup
-DB_NAME = 'users.db'
+DB_NAME = 'data/users.db'
 
 def init_db():
     if not os.path.exists(DB_NAME):

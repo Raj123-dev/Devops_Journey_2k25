@@ -20,8 +20,7 @@ spec:
         - containerPort: 5000
         volumeMounts:
         - name: users-db
-          mountPath: /app/users.db
-          subPath: users.db
+          mountPath: /app/data
       volumes:
       - name: users-db
         persistentVolumeClaim:
