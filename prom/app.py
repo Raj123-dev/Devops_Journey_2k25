@@ -11,7 +11,7 @@ app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
 # Database setup
-DB_NAME = 'data/users.db'
+DB_NAME = '/app/data/users.db'
 
 def init_db():
     db_dir = os.path.dirname(DB_NAME)
@@ -58,4 +58,4 @@ def view_users():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
