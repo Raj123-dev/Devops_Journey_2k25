@@ -5,10 +5,19 @@ image:
   tag: latest
   pullPolicy: Never
 
+
 service:
   type: NodePort
   port: 5000
   nodePort: 30017
+
+Prometheus scrape config example (add this to your Prometheus server's prometheus.yml, not here):
+
+ scrape_configs:
+  - job_name: 'flask-app'
+     metrics_path: /metrics
+     static_configs:
+       - targets: ['192.168.49.2:30017']
 
 persistence:
   enabled: true
