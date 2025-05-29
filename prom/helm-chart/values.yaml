@@ -10,6 +10,7 @@ service:
   type: NodePort
   port: 5000
 
+
 # Prometheus scrape config example (add this to your Prometheus server's prometheus.yml, not here):
 #
 # scrape_configs:
