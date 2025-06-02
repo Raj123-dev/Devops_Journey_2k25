@@ -12,14 +12,14 @@ spec:
   - name: flask-app-alerts
     rules:
     - alert: FlaskAppDown
-      expr: up{job="flask-app", instance="192.168.49.2:30254"} == 0
+      expr: up{job="flask-app", instance="192.168.49.2:30017"} == 0
       for: 8s
       labels:
         severity: critical
         team: devops
       annotations:
         summary: "Flask app instance is down"
-        description: "The Flask app at 192.168.49.2:30254 is not reachable by Prometheus."
+        description: "The Flask app at 192.168.49.2:30017 is not reachable by Prometheus."
 
 ---
 # Alertmanager Configuration Section
