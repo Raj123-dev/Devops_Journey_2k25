@@ -1,0 +1,60 @@
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: flask-app-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus  # Must match your Helm release name
+    app: kube-prometheus-stack  # Important for rule discovery
+spec:
+  groups:
+  - name: flask-app-alerts
+    rules:
+    - alert: FlaskAppDown
+      expr: up{job="flask-app", instance="192.168.49.2:30254"} == 0
+      for: 8s
+      labels:
+        severity: critical
+        team: devops
+      annotations:
+        summary: "Flask app instance is down"
+        description: "The Flask app at 192.168.49.2:30254 is not reachable by Prometheus."
+
+---
+# Alertmanager Configuration Section
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-prometheus-kube-prometheus-alertmanager
+  namespace: monitoring
+type: Opaque
+stringData:
+  alertmanager.yaml: |
+    global:
+      resolve_timeout: 5m
+      smtp_from: 'rajkashyapdev12@gmail.com'
+      smtp_smarthost: 'smtp.gmail.com:587'
+      smtp_auth_username: 'rajkashyapdev12@gmail.com'
+      smtp_auth_password: 'kigu kxay pxss rsfz'
+      smtp_require_tls: true
+    
+    route:
+      group_by: ['alertname']
+      group_wait: 8s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: 'email-notifications'
+      routes:
+      - match:
+          team: devops  # Will catch our Flask app alerts
+        receiver: 'email-notifications'
+    
+    receivers:
+    - name: 'email-notifications'
+      email_configs:
+      - to: 'rajkashyapdev12@gmail.com'
+        send_resolved: true
+        headers:
+          Subject: '[Alert] {{ .CommonLabels.severity }}: {{ .CommonAnnotations.summary }}'
+
