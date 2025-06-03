@@ -15,27 +15,3 @@ prometheus:
         mountPath: /etc/prometheus/scrape_configs
         readOnly: true
 
-# grafana:
-#   enabled: true
-#   grafana.ini:
-#     smtp:
-#       enabled: true
-#       host: "smtp.gmail.com:587"
-#       user: "rajkashyapdev12@gmail.com"
-#       password: "$__file{/etc/grafana-secrets/smtp-password}"
-#       from_address: "rajkashyapdev12@gmail.com"
-#       from_name: "Grafana Alerts"
-#       skip_verify: false
-#       ehlo_identity: "gmail.com"
-#       startTLS_policy: "OpportunisticStartTLS"
-  
-#   # Remove ALL other SMTP-related configurations
-#   extraVolumes:
-#     - name: grafana-secrets
-#       secret:
-#         secretName: grafana-smtp-password
-  
-#   extraVolumeMounts:
-#     - name: grafana-secrets
-#       mountPath: "/etc/grafana-secrets"
-#       readOnly: true
