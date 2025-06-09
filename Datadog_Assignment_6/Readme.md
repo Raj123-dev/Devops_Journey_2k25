@@ -120,27 +120,7 @@ clusterAgent:
 
 ![Kubernetes Pods Monitoring](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/flask-app%20pod%20resource%20view.png)
 
-## Alert Configuration
-Configured an alert to monitor the Flask application pod status. The alert triggers when:
 
-- The Flask app pod becomes unavailable
-- Sends notification to shivanandchouhan959@gmail.com
-
-Alert query:
-```sql
-avg(last_5m):avg:kubernetes_state.deployment.replicas_available{kube_deployment:flask-app, cluster:minikube} by {kube_deployment,kube_cluster_name} < 1
-```
-
-Alert message includes:
-- Pod name
-- Deployment name
-- Cluster name
-- Timestamp of the event
-
-![Alert Overview](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/Alert_status.png)
-
-
-## Troubleshooting
 For any integration issues:
 1. Verify API keys and site configuration
 2. Check agent logs for errors:
