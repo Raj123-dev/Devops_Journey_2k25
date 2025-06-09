@@ -40,7 +40,6 @@ sudo systemctl stop datadog-agent   # Stop the agent
 sudo systemctl status datadog-agent # Check agent status
 ```
 
-![Datadog Host Installation](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/host%20machines.png)
 
 Enabled service monitoring by modifying the `datadog.yaml` configuration file.
 
@@ -57,7 +56,6 @@ process_config:
     enabled: true
 ```
 
-![Host Integration Status](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/host%20Integrations.png)
 
 ## Docker Integration
 ### Configure Docker Group:
@@ -74,7 +72,6 @@ instances:
     - url: "unix://var/run/docker.sock"
 ```
 
-![Docker Containers Monitoring](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/docker%20containers.png)
 
 ## Jenkins Integration
 Integrated Jenkins with Datadog for pipeline monitoring by:
@@ -116,9 +113,6 @@ clusterAgent:
   replicas: 2
 ```
 
-![Kubernetes Pods Monitoring](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/kubernetes%20pods.png)
-
-![Kubernetes Pods Monitoring](https://github.com/ShivaChouhan/devops_training/blob/main/Datadog_Assignment_6/Images/flask-app%20pod%20resource%20view.png)
 
 
 For any integration issues:
