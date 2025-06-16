@@ -1,13 +1,13 @@
 // Jenkinsfile for hello-springboot-app
 pipeline {
-    agent {label "java-node"}
+    agent {label "slave-node"}
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('shivachouhan-dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('rajkashyap12')
     }
     stages {
         stage('SCM Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/ShivaChouhan/devops_training.git'
+                git branch: 'main', url: 'https://github.com/Raj123-dev/Devops_Journey_2k25.git'
             }
         }
         stage('Build JAR') {
@@ -20,7 +20,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('Jenkins_Assignment_7/hello-springboot-app') {
-                    sh 'sudo docker build -t shivachouhan/snake-ladder-game:hello-springboot-app_$BUILD_NUMBER .'
+                    sh 'sudo docker build -t rajkashyap12/master-slave:hello-springboot-app_$BUILD_NUMBER .'
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Push Image') {
             steps {
                 dir('Jenkins_Assignment_7/hello-springboot-app') {
-                    sh 'sudo docker push shivachouhan/snake-ladder-game:hello-springboot-app_$BUILD_NUMBER'
+                    sh 'sudo docker push rajkashyap12/master-slave:hello-springboot-app_$BUILD_NUMBER'
                 }
             }
         }
