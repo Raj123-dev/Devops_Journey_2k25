@@ -1,10 +1,10 @@
 pipeline {
     agent { label "Slave_node" }
     stages {
-        stage('Clone Repository') {
+        stage('checkout scm') {
             steps {
-                git branch: 'main', url: 'https://github.com/ShivaChouhan/devops_training.git'
-            }
+                checkout scm
+}
         }
         stage('Build JAR') {
             steps {
