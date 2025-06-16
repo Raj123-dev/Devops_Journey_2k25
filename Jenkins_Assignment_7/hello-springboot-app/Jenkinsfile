@@ -1,6 +1,6 @@
 // Jenkinsfile for hello-springboot-app
 pipeline {
-    agent {label "slave-node"}
+    agent {label "Slave_node"}
     environment {
         DOCKERHUB_CREDENTIALS = credentials('rajkashyap12')
     }
