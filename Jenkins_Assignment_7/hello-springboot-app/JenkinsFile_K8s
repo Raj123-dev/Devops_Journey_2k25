@@ -1,5 +1,5 @@
 pipeline {
-    agent { label "java-node" }
+    agent { label "Slave_node" }
     stages {
         stage('Clone Repository') {
             steps {
