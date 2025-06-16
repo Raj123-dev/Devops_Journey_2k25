@@ -1,11 +1,15 @@
 pipeline {
     agent { label "Slave_node" }
+    environment {
+        MINIKUBE_ENV = sh(script: 'minikube docker-env', returnStdout: true).trim()
+    }
     stages {
-         stage('Clone Repository') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/Raj123-dev/Devops_Journey_2k25.git'
             }
         }
+
         stage('Build JAR') {
             steps {
                 dir('Jenkins_Assignment_7/hello-springboot-app') {
@@ -13,30 +17,36 @@ pipeline {
                 }
             }
         }
-stage('Build Docker Image') {
-    steps {
-        dir('Jenkins_Assignment_7/hello-springboot-app') {
-            sh '''
-                eval $(minikube docker-env)
-                docker build -t hello-springboot-app:latest .
-            '''
+
+        stage('Build Docker Image') {
+            steps {
+                dir('Jenkins_Assignment_7/hello-springboot-app') {
+                    sh '''
+                        eval "$(minikube docker-env)"
+                        docker build -t hello-springboot-app:latest .
+                    '''
+                }
+            }
         }
-    }
-}
+
         stage('Deploy to Minikube') {
             steps {
                 dir('Jenkins_Assignment_7/hello-springboot-app') {
-
-                    // Apply deployment and service to Minikube
-                    sh 'kubectl apply -f deployment.yaml'
+                    sh '''
+                        eval "$(minikube docker-env)"
+                        kubectl apply -f deployment.yaml
+                    '''
                 }
             }
         }
     }
+
     post {
         always {
-            // Optionally, show service URL
-            sh 'minikube service hello-springboot-app-service --url || true'
+            sh '''
+                eval "$(minikube docker-env)"
+                minikube service hello-springboot-app-service --url || true
+            '''
         }
     }
-} 
+}
