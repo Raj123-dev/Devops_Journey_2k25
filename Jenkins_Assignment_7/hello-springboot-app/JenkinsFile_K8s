@@ -1,7 +1,7 @@
 pipeline {
-    agent { label "Slave_node" }
-    environment {
-        MINIKUBE_ENV = sh(script: 'minikube docker-env', returnStdout: true).trim()
+    agent {
+    label "Slave_node"
+    }
     }
     stages {
         stage('Clone Repository') {
