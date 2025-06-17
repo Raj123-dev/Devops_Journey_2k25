@@ -1,4 +1,3 @@
-
 name: Java Docker K8s Deployment
 
 on:
@@ -7,11 +6,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Verify Minikube status
+      - name: Verify Minikube Status
         run: minikube status
 
       - name: Set up JDK 17
@@ -20,30 +20,39 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
+      - name: Build JAR with Maven
         working-directory: Jenkins_Assignment_7/hello-springboot-app
         run: mvn clean package
 
-      - name: Configure Docker to use Minikube
+      - name: Configure Docker to Use Minikube
         run: eval $(minikube docker-env)
 
-      - name: Build Docker image
+      - name: Build Docker Image
         working-directory: Jenkins_Assignment_7/hello-springboot-app
-        run: docker build -t hello-springboot-app:latest .
+        run: |
+          eval $(minikube docker-env)
+          docker build -t hello-springboot-app:latest .
 
-      - name: Verify Docker image exists
-        run: docker images | grep hello-springboot-app
+      - name: Verify Docker Image
+        run: |
+          eval $(minikube docker-env)
+          docker images | grep hello-springboot-app || echo "Image not found!"
 
       - name: Deploy to Minikube
         working-directory: Jenkins_Assignment_7/hello-springboot-app
         run: |
+          eval $(minikube docker-env)
           kubectl apply -f deployment.yaml
-          kubectl get pods 
+
+      - name: Expose Service URL
+        run: |
+          eval $(minikube docker-env)
           echo "Service URL:"
           minikube service hello-springboot-app-service --url || true
 
-      - name: Verify deployment
+      - name: Verify Deployment & Pods
         run: |
+          eval $(minikube docker-env)
           kubectl get deployments
           kubectl describe deployment hello-springboot-app
           kubectl get pods
