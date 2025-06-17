@@ -48,11 +48,6 @@ jobs:
           eval $(minikube docker-env)
           kubectl delete deployment hello-springboot-app
           kubectl apply -f deployment.yaml
-     
-      - name: 🔁 Restart Pod to Use Latest Image
-        run: |
-          eval $(minikube docker-env)
-          kubectl delete pod -l app=hello-springboot-app || true
 
       - name: Expose Service URL
         run: |
