@@ -19,27 +19,41 @@ After installing Jenkins on the master VM:
 3. Configure system settings as needed (e.g., tools, global credentials).
 4. Add the slave VM as a Jenkins agent for distributed builds.
 
-## Adding the Slave Node (Agent) in Jenkins
-To enable distributed builds, the slave VM was added as a Jenkins agent:
-1. In Jenkins, go to **Manage Jenkins** > **Manage Nodes and Clouds**.
-2. Click **New Node**.
-3. Enter a name (e.g., `Slave_node`), select **Permanent Agent**, and click OK.
-4. Configure the agent:
+## Step-by-Step: Adding and Connecting a Jenkins Slave Node (Agent)
+
+1. **Create the Agent Node in Jenkins (Master VM):**
+   - Go to **Manage Jenkins** > **Manage Nodes and Clouds**.
+   - Click **New Node**.
+   - Enter a name (e.g., `Slave_node`), select **Permanent Agent**, and click OK.
    - Set the number of executors to **2**.
-   - Enter the remote root directory as **/opt/build** (make sure to create this directory on the slave VM).
+   - Enter the remote root directory as **/opt/build**.
    - Set the labels (e.g., `Slave_node`) to match your pipeline configuration.
    - Choose the launch method: **Launch agent by connecting it to the controller** (JNLP/agent.jar method).
-5. On the slave VM, manually create the `/opt/build` directory:
-   ```sh
-   sudo mkdir -p /opt/build
-   sudo chown jenkins:jenkins /opt/build
-   ```
-   This directory is created at the root (`/`) of the filesystem on the slave VM, resulting in the full path `/opt/build`.
-   Jenkins will use this as the working directory for the agent's jobs and files.
-   This step is necessary because Jenkins requires the remote root directory to exist and be writable by the Jenkins agent user. If the directory does not exist or has incorrect permissions, the agent will fail to start or may not be able to execute jobs properly.
-6. Save and launch the agent from the slave VM as instructed by Jenkins.
+   - Save the node configuration.
 
-The slave node is now ready to execute build and deployment jobs as part of your Jenkins pipelines.
+2. **Prepare the Slave VM:**
+   - Manually create the `/opt/build` directory on the slave VM:
+     ```sh
+     sudo mkdir -p /opt/build
+     sudo chown jenkins:jenkins /opt/build
+     ```
+   - This directory is created at the root (`/`) of the filesystem and will be used by Jenkins for job workspaces and files.
+
+3. **Transfer agent.jar to the Slave VM:**
+   - Download `agent.jar` from the Jenkins master (controller). If the slave VM cannot download it directly, use `scp` to transfer it:
+     ```sh
+     # Run this command on your local machine or the master VM
+     scp jenkins@<master-vm-ip>:/path/to/agent.jar jenkins@<slave-vm-ip>:/home/jenkins/agent.jar
+     ```
+
+4. **Connect the Slave Node to Jenkins:**
+   - In the Jenkins UI on the master VM, open the configuration page for your `Slave_node`.
+   - Copy the Java command provided (it includes the JNLP URL and secret).
+   - Paste and run this command on the slave VM to connect the agent to the Jenkins master:
+     ```sh
+     java -jar /home/jenkins/agent.jar -jnlpUrl http://<master-vm-ip>:8080/computer/Slave_node/jenkins-agent.jnlp -secret <secret-key> -workDir "/opt/build"
+     ```
+   - Once executed, the slave node will appear as "connected" in the Jenkins UI and will be ready to run jobs.
 
 ## Docker Credentials Setup in Jenkins
 To enable Jenkins to push Docker images to DockerHub, set up Docker credentials:
