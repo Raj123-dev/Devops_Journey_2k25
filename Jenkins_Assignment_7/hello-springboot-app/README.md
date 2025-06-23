@@ -145,8 +145,7 @@ kubectl apply -f deployment.yaml
 - 📥 When adding a new slave node (agent) in Jenkins using the "Launch agent by connecting it to the controller" method, Jenkins provides a command to run on the slave VM. This command downloads the `agent.jar` file from the Jenkins master (controller) to the slave VM, or you can transfer it using `scp` if needed.
 - 🔗 The `agent.jar` file is responsible for establishing a connection between the slave node and the Jenkins master, allowing the agent to receive and execute jobs.
 
-## 👤 Author
-Raj Kashyap
+
 
 ---
 This project is for educational purposes as part of DevOps Journey 2k25 assignments.
