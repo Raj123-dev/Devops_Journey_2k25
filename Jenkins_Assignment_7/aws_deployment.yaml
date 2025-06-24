@@ -15,7 +15,7 @@ spec:
       containers:
       - name: hello-springboot-app
         image: hello-springboot-app:latest
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 ---
