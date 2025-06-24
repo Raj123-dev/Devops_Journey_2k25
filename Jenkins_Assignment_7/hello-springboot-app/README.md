@@ -139,6 +139,39 @@ kubectl apply -f deployment.yaml
 - Use `Jenkinsfile` for CI/CD with DockerHub.
 - Use `JenkinsFile_K8s` for CI/CD with Minikube.
 
+## Example buildspec.yml for AWS CodePipeline with Docker Hub
+
+```yaml
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Docker Hub...
+      - echo $DOCKERHUB_PASSWORD | docker login --username rajkashyap12 --password-stdin
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+    commands:
+      - echo Building the Maven project...
+      - mvn clean package
+      - echo Building the Docker image...
+      - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG .
+      - docker push rajkashyap12/hello-springboot-app:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Updating deployment.yaml with new image...
+      - sed -i "s|image:.*|image: rajkashyap12/hello-springboot-app:$IMAGE_TAG|g" deployment.yaml
+      - echo Applying Kubernetes manifests to EKS...
+      - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
+      - kubectl apply -f deployment.yaml
+artifacts:
+  files:
+    - deployment.yaml
+```
+
+- Set your Docker Hub password as the `DOCKERHUB_PASSWORD` environment variable in CodeBuild (preferably using AWS Secrets Manager).
+- Set `AWS_REGION` and `EKS_CLUSTER_NAME` as environment variables in CodeBuild.
+
 ## 📚 Reference: Jenkins Agent Working Directory and agent.jar
 
 - 🗂️ The Jenkins agent (slave node) uses `/opt/build` as its remote root directory, created at the root (`/`) of the filesystem on the slave VM. All Jenkins job workspaces, build files, and temporary files for jobs running on the agent will be stored under this directory.
