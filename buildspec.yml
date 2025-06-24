@@ -10,7 +10,7 @@ phases:
 
   build:
     commands:
-      - echo Building the Maven project...
+      - echo Building the Maven project..
       - mvn clean package
       - echo Building the Docker image...
       - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG .
