@@ -5,17 +5,19 @@ phases:
     commands:
       - echo Logging in to Docker Hub...
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo IMAGE_TAG=$IMAGE_TAG
   build:
     commands:
       - echo Building the Maven project...
       - mvn clean package
       - echo Building the Docker image...
-      - docker build -t rajkashyap12/hello-springboot-app:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7) .
-      - docker push rajkashyap12/hello-springboot-app:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG .
+      - docker push rajkashyap12/hello-springboot-app:$IMAGE_TAG
   post_build:
     commands:
       - echo Updating deployment.yaml with new image...
-      - sed -i "s|image:.*|image: rajkashyap12/hello-springboot-app:$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)|g" deployment.yaml
+      - sed -i "s|image:.*|image: rajkashyap12/hello-springboot-app:$IMAGE_TAG|g" deployment.yaml
       - echo Applying Kubernetes manifests to EKS...
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - kubectl apply -f deployment.yaml
