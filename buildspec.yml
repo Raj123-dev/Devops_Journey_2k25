@@ -3,20 +3,23 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo Retrieving Docker Hub credentials from Secrets Manager...
+      - export DOCKERHUB_USERNAME=$(aws secretsmanager get-secret-value --secret-id dockerhub/credentials --query SecretString --output text | jq -r .username)
+      - export DOCKERHUB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id dockerhub/credentials --query SecretString --output text | jq -r .password)
       - echo Logging in to Docker Hub...
-      - echo $DOCKERHUB_PASSWORD | docker login --username rajkashyap12 --password-stdin
+      - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
       - echo Building the Maven project...
       - mvn clean package
       - echo Building the Docker image...
-      - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG .
-      - docker push rajkashyap12/hello-springboot-app:$IMAGE_TAG
+      - docker build -t $DOCKERHUB_USERNAME/hello-springboot-app:$IMAGE_TAG .
+      - docker push $DOCKERHUB_USERNAME/hello-springboot-app:$IMAGE_TAG
   post_build:
     commands:
       - echo Updating deployment.yaml with new image...
-      - sed -i "s|image:.*|image: rajkashyap12/hello-springboot-app:$IMAGE_TAG|g" Jenkins_Assignment_7/hello-springboot-app/deployment.yaml
+      - sed -i "s|image:.*|image: $DOCKERHUB_USERNAME/hello-springboot-app:$IMAGE_TAG|g" Jenkins_Assignment_7/hello-springboot-app/deployment.yaml
       - echo Applying Kubernetes manifests to EKS...
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - kubectl apply -f Jenkins_Assignment_7/hello-springboot-app/deployment.yaml
