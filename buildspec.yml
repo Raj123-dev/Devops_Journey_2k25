@@ -6,7 +6,8 @@ phases:
       - echo Logging in to Docker Hub...
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - echo IMAGE_TAG=$IMAGE_TAG
+      - echo "IMAGE_TAG=$IMAGE_TAG"
+
   build:
     commands:
       - echo Building the Maven project...
@@ -14,6 +15,7 @@ phases:
       - echo Building the Docker image...
       - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG .
       - docker push rajkashyap12/hello-springboot-app:$IMAGE_TAG
+
   post_build:
     commands:
       - echo Updating deployment.yaml with new image...
