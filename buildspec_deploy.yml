@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Setting up kubeconfig..."
+      - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
+
+  build:
+    commands:
+      - echo "Fetching service details from EKS..."
+      - SERVICE_NAME="hello-springboot-app-service"
+      - NODE_PORT=$(kubectl get svc $SERVICE_NAME -o jsonpath='{.spec.ports[0].nodePort}')
+      - NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+      - echo "🔗 Application is running at: http://$NODE_IP:$NODE_PORT"
