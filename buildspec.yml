@@ -26,6 +26,6 @@ phases:
       - export IMAGE_TAG=$IMAGE_TAG
       - envsubst < Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml > final_deployment.yaml
       - kubectl apply -f final_deployment.yaml
-artifacts:
-  files:
-    - Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml
+# artifacts:
+#   files:
+#     # - Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml
