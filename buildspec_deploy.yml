@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo "Setting up kubeconfig..."
-      - aws eks update-kubeconfig --region us-east-1 --name my-cluster
+      - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
 
   build:
     commands:
@@ -12,8 +12,10 @@ phases:
       - SERVICE_NAME="hello-springboot-app-service"
       - NODE_PORT=$(kubectl get svc $SERVICE_NAME -o jsonpath='{.spec.ports[0].nodePort}')
       - NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
-      - APP_URL="http://$NODE_IP:$NODE_PORT"
-      - echo App URL: "$APP_URL"
-
-
-
+      - >
+        if [ -z "$NODE_PORT" ] || [ -z "$NODE_IP" ]; then
+          echo "❌ Failed to fetch NODE_IP or NODE_PORT";
+          exit 1;
+        else
+          echo "✅ Application is running at: http://$NODE_IP:$NODE_PORT";
+        fi
