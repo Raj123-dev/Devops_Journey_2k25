@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - echo "Setting up kubeconfig..."
-      - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
+      - aws eks update-kubeconfig --region us-east-1 --name my-cluster
 
   build:
     commands:
