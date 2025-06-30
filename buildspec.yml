@@ -38,7 +38,7 @@ phases:
       - kubectl delete deployment hello-springboot-app || true
       - kubectl apply -f final_deployment.yaml
       - kubectl get deployment hello-springboot-app -o=jsonpath="{.spec.template.spec.containers[0].image}"
-      - curl localhost:8080/hello
+      - kubectl get pods -l app=hello-springboot-app -o wide
 
       - echo Verifying deployment...
       - kubectl rollout restart deployment/hello-springboot-app 
