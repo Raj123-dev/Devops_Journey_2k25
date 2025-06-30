@@ -18,7 +18,7 @@ phases:
   build:
     commands:
       - echo Building the Maven project...
-      - cd Jenkins_Assignment_7/hello-springboot-app
+      - mvn -f Jenkins_Assignment_7/hello-springboot-app/pom.xml clean package
       - mvn clean package
 
       - echo Building the Docker image...
