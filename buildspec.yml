@@ -34,6 +34,8 @@ phases:
       - cat final_deployment.yaml
       - echo Applying Kubernetes manifests to EKS...
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
+      - kubectl delete pods -l app=hello-springboot-app || true
+      - kubectl delete deployment hello-springboot-app || true
       - kubectl apply -f final_deployment.yaml
       - kubectl get deployment hello-springboot-app -o=jsonpath="{.spec.template.spec.containers[0].image}"
 
