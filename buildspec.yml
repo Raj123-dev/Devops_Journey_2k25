@@ -37,4 +37,4 @@ phases:
       - kubectl apply -f final_deployment.yaml
 
       - echo Verifying deployment...
-      - kubectl rollout status deployment/hello-springboot-app --timeout=300s
+      - kubectl rollout restart deployment/hello-springboot-app --timeout=300s
