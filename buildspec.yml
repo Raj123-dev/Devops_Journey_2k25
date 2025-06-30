@@ -2,27 +2,15 @@ version: 0.2
 
 env:
   variables:
-    AWS_REGION: "us-east-1"
-    EKS_CLUSTER_NAME: "my-cluster"
     REPO_NAME: "hello-springboot-app"
 
 phases:
-  install:
-    runtime-versions:
-      java: corretto17
-    commands:
-      - echo Installing required tools...
-      - apt-get update -y
-      - apt-get install -y maven docker.io gettext-base
-      - curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - chmod +x kubectl
-      - mv kubectl /usr/local/bin/
-
   pre_build:
     commands:
       - echo Logging in to Docker Hub...
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
 
+      # Generate unique IMAGE_TAG using timestamp + short commit hash
       - IMAGE_TAG=$(date +%Y%m%d%H%M%S)-$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - export IMAGE_TAG
       - echo "Using IMAGE_TAG=$IMAGE_TAG"
@@ -35,12 +23,12 @@ phases:
       - echo Building the Docker image...
       - docker build -t rajkashyap12/$REPO_NAME:$IMAGE_TAG -f Jenkins_Assignment_7/hello-springboot-app/Dockerfile Jenkins_Assignment_7/hello-springboot-app
 
-      - echo Pushing image to Docker Hub...
+      - echo Pushing Docker image to Docker Hub...
       - docker push rajkashyap12/$REPO_NAME:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Updating aws_deployment.yaml with new image tag...
+      - echo Updating Kubernetes manifest with new image tag...
       - export IMAGE_TAG=$IMAGE_TAG
       - envsubst < Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml > final_deployment.yaml
 
@@ -48,5 +36,5 @@ phases:
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - kubectl apply -f final_deployment.yaml
 
-      - echo Verifying deployment rollout...
+      - echo Verifying deployment...
       - kubectl rollout status deployment/hello-springboot-app --timeout=300s
