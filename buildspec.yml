@@ -35,6 +35,7 @@ phases:
       - echo Applying Kubernetes manifests to EKS...
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
       - kubectl apply -f final_deployment.yaml
+      - kubectl get deployment hello-springboot-app -o=jsonpath="{.spec.template.spec.containers[0].image}"
 
       - echo Verifying deployment...
       - kubectl rollout restart deployment/hello-springboot-app 
