@@ -1,37 +1,28 @@
 version: 0.2
 
-env:
-  variables:
-    AWS_REGION: "us-east-1"
-    EKS_CLUSTER_NAME: "my-cluster"
-    DOCKER_IMAGE_NAME: "rajkashyap12/hello-springboot-app"
-
 phases:
   pre_build:
     commands:
       - echo Logging in to Docker Hub...
       - echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin
-
-      - echo Generating IMAGE_TAG from CodeBuild build ID...
-      - IMAGE_TAG=$(echo $CODEBUILD_BUILD_ID | awk -F':' '{print $2}')
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - export IMAGE_TAG
       - echo "IMAGE_TAG=$IMAGE_TAG"
 
   build:
     commands:
-      - echo Building the Maven project...
+      - echo Building the Maven project..
       - mvn clean package
-
       - echo Building the Docker image...
-      - docker build -t $DOCKER_IMAGE_NAME:$IMAGE_TAG -f Jenkins_Assignment_7/hello-springboot-app/Dockerfile Jenkins_Assignment_7/hello-springboot-app
-      - docker push $DOCKER_IMAGE_NAME:$IMAGE_TAG
+      - docker build -t rajkashyap12/hello-springboot-app:$IMAGE_TAG -f Jenkins_Assignment_7/hello-springboot-app/Dockerfile Jenkins_Assignment_7/hello-springboot-app
+      - docker push rajkashyap12/hello-springboot-app:$IMAGE_TAG
 
   post_build:
     commands:
+      - echo Updating aws_deployment.yaml with new image...
+      #- sed -i "s|image:.*|image: rajkashyap12/hello-springboot-app:$IMAGE_TAG|g" Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml
       - echo Applying Kubernetes manifests to EKS...
-
       - aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
-
       - export IMAGE_TAG=$IMAGE_TAG
       - envsubst < Jenkins_Assignment_7/hello-springboot-app/aws_deployment.yaml > final_deployment.yaml
       - kubectl apply -f final_deployment.yaml
