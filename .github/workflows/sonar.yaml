@@ -1,0 +1,38 @@
+name: SonarQube CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-sonar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build JAR
+        working-directory: Jenkins_Assignment_7/hello-springboot-app
+        run: mvn clean package
+
+      - name: SonarQube Analysis
+        working-directory: Jenkins_Assignment_7/hello-springboot-app
+        run: mvn sonar:sonar -Dsonar.projectKey=hello-springboot-app \
+                             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+                             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
