@@ -29,7 +29,7 @@ jobs:
 
       - name: Build project
         run: mvn clean install -DskipTests
-        working-directory: ./jenkins_assignment_7/hello-springboot-app
+        working-directory: ./Jenkins_Assignment_7/hello-springboot-app
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
