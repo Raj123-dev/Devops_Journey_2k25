@@ -1,12 +1,14 @@
 name: CodeQL Analysis
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 2 * * 1'  # optional: weekly scan on Monday 2am UTC
+  
+  workflow_dispatch:  #  manual trigger build
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+  # schedule:
+  #   - cron: '0 2 * * 1'  # optional: weekly scan on Monday 2am UTC
 
 jobs:
   analyze:
@@ -29,7 +31,7 @@ jobs:
 
       - name: Build project
         run: mvn clean install -DskipTests
-        working-directory: ./Jenkins_Assignment_7/hello-springboot-app
+        working-directory: ./Sonar_Assignment_10/hello-springboot-app
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
