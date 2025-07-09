@@ -8,7 +8,7 @@ import java.io.IOException;
 
 @RestController
 public class HelloController {
-
+ 
     @GetMapping("/hi")
     public String sayHello() {
         return "Hi Raj Kashyap!!!!!! That's my Java application.";
