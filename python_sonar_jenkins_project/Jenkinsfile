@@ -1,26 +1,41 @@
 pipeline {
     agent any
 
+    environment {
+        SONAR_SCANNER_HOME = tool 'SonarScanner'  // Ensure this tool is configured
+    }
+
     stages {
-        stage('Install Dependencies') {
+        stage('Setup Python Virtual Env') {
             steps {
-                sh 'pip install pytest coverage'
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install pytest coverage
+                '''
             }
         }
-        stage('Run Tests and Coverage') {
+
+        stage('Run Tests and Generate Coverage') {
             steps {
-                sh 'coverage run -m pytest'
-                sh 'coverage xml'
-                sh 'coverage report'
+                sh '''
+                    . venv/bin/activate
+                    coverage erase
+                    coverage run -m pytest
+                    coverage xml
+                    sed -i 's|<source>.*</source>|<source>.</source>|g' coverage.xml
+                '''
             }
         }
+
         stage('SonarQube Analysis') {
-            environment {
-                SONAR_SCANNER_HOME = tool 'SonarScanner'
-            }
             steps {
                 withSonarQubeEnv('MyLocalSonar') {
-                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
+                    sh '''
+                        . venv/bin/activate
+                        ${SONAR_SCANNER_HOME}/bin/sonar-scanner
+                    '''
                 }
             }
         }
