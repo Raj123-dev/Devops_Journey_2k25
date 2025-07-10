@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install pytest coverage'
+            }
+        }
+        stage('Run Tests and Coverage') {
+            steps {
+                sh 'coverage run -m pytest'
+                sh 'coverage xml'
+                sh 'coverage report'
+            }
+        }
+        stage('SonarQube Analysis') {
+            environment {
+                SONAR_SCANNER_HOME = tool 'SonarScanner'
+            }
+            steps {
+                withSonarQubeEnv('MyLocalSonar') {
+                    sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
+                }
+            }
+        }
+    }
+}
