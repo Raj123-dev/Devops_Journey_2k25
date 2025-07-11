@@ -26,7 +26,7 @@ public class HelloController {
     // Vulnerable endpoint (command injection)
     @GetMapping("/run")
     public String runCommand(@RequestParam String cmd) throws IOException {
-        Runtime.getRuntime().exec(cmd);  // Command injection (CodeQL will flag)
+        Runtime.getRuntime().exec(cmd);  // Command injection 
         return "Command executed: " + cmd;
     }
 
