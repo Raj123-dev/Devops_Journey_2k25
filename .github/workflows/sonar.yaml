@@ -1,9 +1,7 @@
 name: SonarQube CI
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  #  manual trigger build
 
 jobs:
   build-and-sonar:
