@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONAR_SCANNER_HOME = tool 'SonarScanner'  // Ensure this tool is configured
+        SONAR_SCANNER_HOME = tool 'Sonar_5'  // Ensure this tool is configured
     }
 
     stages {
@@ -31,7 +31,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('MyLocalSonar') {
+                withSonarQubeEnv('Sonar_Local') {
                     sh '''
                         . venv/bin/activate
                         ${SONAR_SCANNER_HOME}/bin/sonar-scanner
