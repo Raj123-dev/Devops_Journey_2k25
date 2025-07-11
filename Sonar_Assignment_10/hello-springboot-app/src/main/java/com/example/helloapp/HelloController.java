@@ -18,7 +18,7 @@ public class HelloController {
     @GetMapping("/run")
     public String runCommand(@RequestParam String cmd) throws IOException {
         // ⚠️ CodeQL will flag this as a security issue (command injection)
-        Runtime.getRuntime().exec(cmd);
+        Runtime.getRuntime().exec(cmd);  
         return "Command executed: " + cmd;
     }
 }
