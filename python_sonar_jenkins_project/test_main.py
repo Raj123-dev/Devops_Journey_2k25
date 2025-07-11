@@ -1,4 +1,4 @@
-from main import add
+from main import add, subtract
 
 def test_add():
     assert add(3, 2) == 5
