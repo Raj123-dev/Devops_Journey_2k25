@@ -32,15 +32,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('python_sonar_jenkins_project')
-                {
+                dir('python_sonar_jenkins_project') {
                     withSonarQubeEnv('Sonar_Local') {
-                    sh '''
-                        . venv/bin/activate
+                        sh '''
+                        . ../venv/bin/activate
                         ${SONAR_SCANNER_HOME}/bin/sonar-scanner
-                    '''
-                }
-                }
+                        '''
             }
         }
     }
