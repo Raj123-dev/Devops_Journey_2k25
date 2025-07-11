@@ -21,6 +21,7 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
+                    cd python_sonar_jenkins_project
                     coverage erase
                     coverage run -m pytest
                     coverage xml
