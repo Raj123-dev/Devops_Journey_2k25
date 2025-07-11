@@ -14,10 +14,10 @@ public class HelloController {
         return "Hi Raj Kashyap!!!!!! That's my Java application.";
     }
 
-    // 🚨 Vulnerable endpoint (for testing CodeQL)
+    // Vulnerable endpoint (for testing CodeQL)
     @GetMapping("/run")
     public String runCommand(@RequestParam String cmd) throws IOException {
-        // ⚠️ CodeQL will flag this as a security issue (command injection)
+        // CodeQL will flag this as a security issue (command injection)
         Runtime.getRuntime().exec(cmd);  
         return "Command executed: " + cmd;
     }

@@ -3,12 +3,7 @@ name: CodeQL Analysis
 on:
   
   workflow_dispatch:  #  manual trigger build
-  # push:
-  #   branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
-  # schedule:
-  #   - cron: '0 2 * * 1'  # optional: weekly scan on Monday 2am UTC
+  
 
 jobs:
   analyze:
