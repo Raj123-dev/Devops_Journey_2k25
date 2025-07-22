@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Setup Python Virtual Env') {
             steps {
+                dir('python_sonar_jenkins_project') {
                 sh '''
                     python3 -m venv venv
                     . venv/bin/activate
@@ -16,26 +17,28 @@ pipeline {
                 '''
             }
         }
-
+        }
         stage('Run Tests and Generate Coverage') {
             steps {
+                dir('python_sonar_jenkins_project') {
+                // Activate the virtual environment and run tests with coverage
                 sh '''
                     . venv/bin/activate
-                    cd python_sonar_jenkins_project
                     coverage erase
                     coverage run -m pytest
+                    coverage report
                     coverage xml
-                    sed -i 's|<source>.*</source>|<source>.</source>|g' coverage.xml
+                    
                 '''
             }
         }
-
+        }
         stage('SonarQube Analysis') {
             steps {
                 dir('python_sonar_jenkins_project') {
                     withSonarQubeEnv('Sonar_Local') {
                         sh '''
-                        . ../venv/bin/activate
+                        . venv/bin/activate
                         ${SONAR_SCANNER_HOME}/bin/sonar-scanner
                         '''
             }
