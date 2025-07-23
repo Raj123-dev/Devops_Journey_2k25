@@ -1,6 +1,6 @@
 ---
 - name: Linux server setup
-  hosts: all
+  hosts: server
   become: true
 
   roles:
