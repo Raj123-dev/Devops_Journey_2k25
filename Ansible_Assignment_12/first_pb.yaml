@@ -1,6 +1,6 @@
 ---
 - name: First Basic PB
-  hosts: all
+  hosts: server
   become: true
 
   tasks:
