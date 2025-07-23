@@ -1,7 +1,7 @@
 ---
 - name: First Basic PB
   hosts: server
-  become: true
+  become: yes
 
   tasks:
     - name: install nginx
