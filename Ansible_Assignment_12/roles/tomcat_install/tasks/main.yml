@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for tomcat_install
+- name: Install Java
+  apt:
+    name: openjdk-11-jdk
+    state: present
+
+- name: Download Tomcat
+  get_url:
+    url: "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.82/bin/apache-tomcat-9.0.82.tar.gz"
+    dest: /opt/tomcat.tar.gz
+
+- name: Extract Tomcat
+  unarchive:
+    src: /opt/tomcat.tar.gz
+    dest: /opt/
+    remote_src: yes

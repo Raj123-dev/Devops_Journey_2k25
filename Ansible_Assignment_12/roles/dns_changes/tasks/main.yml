@@ -1,0 +1,13 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for dns_changes
+- name: Install DNS server (bind9)
+  apt:
+    name: bind9
+    state: present
+
+- name: Ensure bind9 is running
+  service:
+    name: bind9
+    state: started
+    enabled: yes

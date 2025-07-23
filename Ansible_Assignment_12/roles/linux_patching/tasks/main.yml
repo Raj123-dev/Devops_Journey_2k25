@@ -1,0 +1,12 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for linux_patching
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+# - name: Upgrade all packages
+#   apt:
+#     upgrade: dist
+#     autoremove: yes
+#     autoclean: yes

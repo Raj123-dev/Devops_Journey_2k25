@@ -1,0 +1,15 @@
+---
+- name: First Basic PB
+  hosts: all
+  become: true
+
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+    - name: starting the nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: true
