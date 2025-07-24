@@ -9,6 +9,6 @@
     - dns_changes
 
 - name: Windows IIS_setup
-  hosts: windows
+  hosts: win_server
   roles:
     - win_iis
