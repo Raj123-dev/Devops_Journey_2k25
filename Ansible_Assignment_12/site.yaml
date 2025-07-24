@@ -7,3 +7,8 @@
     - linux_patching
     - tomcat_install
     - dns_changes
+
+- name: Windows IIS_setup
+  hosts: windows
+  roles:
+    - win_iis
