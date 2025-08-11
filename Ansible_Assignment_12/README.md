@@ -19,7 +19,7 @@ For this comprehensive assignment, I establish a multi-node infrastructure consi
 1. **🐧 Ubuntu Control Node** (`t2.micro`)
    - Purpose: Ansible automation controller
    - OS: Ubuntu Linux
-   - Role: Orchestrates configuration across managed nodes
+   - Role: Orchestrates configuration across managed nodes     
 
 2. **🐧 Ubuntu Managed Node** (`t2.micro`)  
    - Purpose: Linux target for automation tasks
