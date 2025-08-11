@@ -309,13 +309,13 @@ cd /opt/apache-tomcat-9.0.85/bin
 
 . Then copy the instance public ip and execute it on browser with 8080 like: <your linux public ipv4 ip:8080>
 
-![Tomcat runnig statua](Images/Tomcat_runnig.png)
+![Tomcat runnig status](Images/Tomcat_running.png)
 
 #### For checkup the IIS server
 
 . Just open the window public ipv4 on server
 
-![Window IIS statua](Images/IIS_runnig.png)
+![Window IIS status](Images/IIS_runnig.png)
 
 ## 🎯 Key Learning Outcomes
 
