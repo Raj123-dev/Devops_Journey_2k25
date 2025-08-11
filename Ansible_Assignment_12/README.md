@@ -313,7 +313,7 @@ cd /opt/apache-tomcat-9.0.85/bin
 
 #### For checkup the IIS server
 
-. Just open the window public ipv4 on server
+. Just open the window public ipv4 on server.
 
 ![Window IIS status](Images/IIS_runnig.png)
 
