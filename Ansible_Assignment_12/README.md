@@ -315,7 +315,7 @@ cd /opt/apache-tomcat-9.0.85/bin
 
 . Just open the window public ipv4 on server.
 
-![Window IIS status](Images/IIS_runnig.png)
+![Window IIS status](Images/IIS_running.png)
 
 ## 🎯 Key Learning Outcomes
 
